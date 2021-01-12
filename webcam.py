@@ -24,13 +24,22 @@ Liams_face4_encoding = face_recognition.face_encodings(Liams_image4)[0]
 AtschoolLiam= face_recognition.load_image_file("./img/known/AtschoolLiam.jpg") 
 AtschoolLiam_encoding=face_recognition.face_encodings(AtschoolLiam)[0]
 
+LookieKlas=face_recognition.load_image_file("./img/known/LookieKlas.jpg")
+LookieKlas_encoding=face_recognition.face_encodings(LookieKlas)[0]
+
+Arshya=face_recognition.load_image_file("./img/known/Arshya.jpg")
+Arshya_encoding1=face_recognition.face_encodings(Arshya)[0]
+
 # Create arrays of known face encodings and their names
 known_face_encodings = [ 
     Liams_face1_encoding,
     Liams_face2_encoding,
     Liams_face3_encoding,
     Liams_face4_encoding,
-    AtschoolLiam_encoding 
+    AtschoolLiam_encoding,
+    LookieKlas_encoding,
+    Arshya_encoding1,
+    
     # Can add new variables here
 ]
 known_face_names = [
@@ -38,7 +47,9 @@ known_face_names = [
     "Liam Chae",
     "Liam Chae",
     "Liam Chae",
-    "Liam Chae"
+    "Liam Chae",
+    "Lookie Klas",
+    "Arhshya"
     #Can add more known face names
 
 ]
@@ -56,21 +67,21 @@ while True:
     ret, frame = video_capture.read()
 
     # Resize frame of video to 1/4 size for quicker computiation.
-    small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+    Resize_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
 
     #Convert an image from BGR color to RGB color for change of purpose, from OpenCV to face_recgontion
-    rgb_small_frame = small_frame[:, :, ::-1]
+    New_frame = Resize_frame[:, :, ::-1]
 
     # process frames
     if Compute_frame:
         # Find all the faces and face encodings in the current frame of video
-        face_coordinates = face_recognition.face_locations(rgb_small_frame)
-        face_encodings = face_recognition.face_encodings(rgb_small_frame, face_coordinates)
+        face_coordinates = face_recognition.face_locations(New_frame)
+        face_encodings = face_recognition.face_encodings(New_frame, face_coordinates)
 
         face_names=[]
         for face_encoding in face_encodings:
             # See if the face is a match for the known faces
-            matches = face_recognition.compare_faces(known_face_encodings, face_encoding,tolerance=0.4)
+            matches = face_recognition.compare_faces(known_face_encodings, face_encoding,tolerance=0.45)
             name = "Unknown"
             
             # Use the known face with the smallest distance to the new face
